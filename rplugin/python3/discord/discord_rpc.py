@@ -63,15 +63,7 @@ class Discord(object):
 
         if "microsoft" in os.uname().release:  # wsl
             self.wsl = True
-            with open("/etc/resolv.conf") as f:
-                for line in f:
-                    if "nameserver" in line:
-                        ip = line.split(" ")[1]
-                        break
-                else:
-                    raise Exception()
-
-            self.ipc_path = (ip, 6969)
+            self.ipc_path = ("192.168.1.5", 6969)
             self.socket_type = socket.AF_INET
         else:
             # Stolen from https://github.com/GiovanniMCMXCIX/PyDiscordRPC/blob/master/rpc.py
