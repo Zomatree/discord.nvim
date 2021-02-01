@@ -58,10 +58,11 @@ class Discord(object):
 
         # Sockets
         self.sock = None
-
+        self.wsl = False
         # Discord
 
         if "microsoft" in os.uname().release:  # wsl
+            self.wsl = True
             with open("/etc/resolv.conf") as f:
                 for line in f:
                     if "nameserver" in line:
@@ -82,7 +83,8 @@ class Discord(object):
 
     def connect(self, client_id=None):
         try:
-            os.stat(self.ipc_path)
+            if not self.wsl:
+                os.stat(self.ipc_path)
         except FileNotFoundError:
             raise NoDiscordClientError()
         self.client_id = self.client_id or client_id
